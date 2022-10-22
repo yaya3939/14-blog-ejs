@@ -1,0 +1,30 @@
+<%- include('partials/header'); -%>
+<!-- 怎么使用views下的文件夹里的文件。先看文档里的相关tag的消息 -->
+
+<h1>HOME</h1>
+<p><%= startingContent %></p>
+
+<!-- easier way to show array -->
+<% yourPosts.forEach(function(post) { %>
+<h2><%=post.title %></h2>
+<p>
+  <%=post.content.substring(0,100)+" ..." %>
+  <a href="/posts/<%=post.title %>">Read More</a>
+  <!-- 把anchor放在里面，他们就会在同一行了 -->
+</p>
+
+<!-- 用css来截断字符：class="content" -->
+<!-- 这还是从js output过来的值，所以还是要用这个output value的符号 -->
+
+<% }) %>
+
+<!-- for(var i=0;i<yourPosts.length;i++) {
+    <h2> &= yourPosts[i].title %></h2>
+    <p> &= yourPosts[i].content %></p>
+ } -->
+<!-- 完全忘记了怎么在ejs里使用array了...
+为了显示所有array里的文件，要用for
+在for的条件和内容里都要有一样的array名字，才不会出现undefined error-->
+<!-- 因为已经把js里的array data渲染过来了，所以js的array里的object的key name是可以使用的 -->
+
+<%- include('partials/footer'); -%>

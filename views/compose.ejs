@@ -1,0 +1,18 @@
+<%- include('partials/header'); -%>
+<!-- 怎么使用views下的文件夹里的文件。先看文档里的相关tag的消息 -->
+
+<h1>Compose</h1>
+
+<form action="/compose" method="post">
+  <div class="mb-3">
+    <label class="form-label">Title</label>
+    <input type="text" class="form-control" name="title"/>
+  </div>
+  <div class="mb-3">
+    <label class="form-label">Post </label>
+    <textarea class="form-control" name="postContent"></textarea>
+  </div>
+  <button type="submit" class="btn btn-primary name="button">Publish</button>
+</form>
+
+<%- include('partials/footer'); -%>
