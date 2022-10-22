@@ -24,5 +24,7 @@
 
 ## 问题
 
-- √：header.ejs&footer.ejs 里的标签老是自动补足，让我的 body 外观出了点问题。 sulotion: disable format on save
-- footer in compose page
+- √ header.ejs&footer.ejs 里的标签老是自动补足，让我的 body 外观出了点问题。
+  sulotion: disable format on save
+- √ footer 会出现在可视页面的最低端，即使是 posts 已经超出可视页面了，所以 footer 会杠在 posts 之间。
+  solution：把 footer padding div 去掉，改变 footer 的 position。为了美观还改了一些<p>的 padding 和 footer 的 margin
