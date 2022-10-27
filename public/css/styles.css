@@ -20,7 +20,8 @@
 } */
 
 .footer {
-  position: relative; /*angela version：absolute*/
+  position: relative;
+  /*absolute会让footer在可视页面的最低端，但是当post超出可视页面，就会变奇怪。relative是在离最下box的相对底端，所以当post不超过可视页面时会很奇怪*/
   text-align: center;
   bottom: 0;
   margin-top: 60px; /*modified add*/

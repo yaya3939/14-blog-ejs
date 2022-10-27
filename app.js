@@ -2,11 +2,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const ejs = require("ejs");
 const _ = require("lodash");
+const mongoose = require("mongoose");
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set("view engine", "ejs");
 app.use(express.static("public"));
+mongoose.connect("mongodb://localhost:27017/postDB");
 
 //datas
 const homeStartingConten =
@@ -16,7 +18,9 @@ const aboutStartingConten =
 const contactContent =
   "Yeros est litora commodo magna nec etiam vulputate, senectus turpis nam habitant duis nibh. Molestie cursus lectus risus aenean est dapibus ultricies sollicitudin dui netus, amet hac tempus tincidunt placerat luctus senectus a conubia, purus commodo suscipit elementum accumsan eros quis non maximus.";
 
-var posts = [];
+// var posts = [];
+const postSchema = new mongoose.Schema({ title: String, content: String });
+const Post = mongoose.model("post", postSchema);
 
 //gets
 app.get("/", function (req, res) {
@@ -24,10 +28,13 @@ app.get("/", function (req, res) {
   // const readTitle = posts.post.title.toLowerCase().join("-");
   // console.log(readTitle);
 
-  res.render("home", {
-    startingContent: homeStartingConten,
-    yourPosts: posts,
-    // readAnchor:
+  Post.find({}, function (err, posts) {
+    if (!err) {
+      res.render("home", {
+        startingContent: homeStartingConten,
+        yourPosts: posts,
+      });
+    }
   });
 });
 
@@ -43,7 +50,7 @@ app.get("/compose", function (req, res) {
   res.render("compose");
 });
 
-app.get("/posts/:typtTitle", function (req, res) {
+app.get("/posts/:typetTitle", function (req, res) {
   const urlTtile = _.lowerCase(req.params.typeTitle);
   //format了type进去的title，所以不用在意type title的样式
 
@@ -66,11 +73,11 @@ app.get("/posts/:typtTitle", function (req, res) {
 
 //post
 app.post("/compose", function (req, res) {
-  const post = {
+  const post = new Post({
     title: req.body.title,
     content: req.body.postContent,
-  };
-  posts.push(post);
+  });
+  post.save();
 
   res.redirect("/");
 });
