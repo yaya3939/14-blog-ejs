@@ -17,17 +17,12 @@ const aboutStartingConten =
   "Orci elementum mi ut arcu nec nulla habitasse, potenti hac duis curae venenatis convallis, primis faucibus semper massa scelerisque dictum. Ligula scelerisque maecenas habitasse risus dignissim platea pretium velit feugiat ullamcorper, non nunc blandit dui arcu ridiculus conubia tortor tempus vel ut, cubilia quam suscipit vestibulum est justo dictum mattis mus. Iaculis et volutpat lectus nascetur arcu tempor maximus accumsan ridiculus, leo porttitor etiam.";
 const contactContent =
   "Yeros est litora commodo magna nec etiam vulputate, senectus turpis nam habitant duis nibh. Molestie cursus lectus risus aenean est dapibus ultricies sollicitudin dui netus, amet hac tempus tincidunt placerat luctus senectus a conubia, purus commodo suscipit elementum accumsan eros quis non maximus.";
-
-// var posts = [];
+//database's datas
 const postSchema = new mongoose.Schema({ title: String, content: String });
 const Post = mongoose.model("post", postSchema);
 
 //gets
 app.get("/", function (req, res) {
-  // const
-  // const readTitle = posts.post.title.toLowerCase().join("-");
-  // console.log(readTitle);
-
   Post.find({}, function (err, posts) {
     if (!err) {
       res.render("home", {
@@ -50,25 +45,19 @@ app.get("/compose", function (req, res) {
   res.render("compose");
 });
 
-app.get("/posts/:typetTitle", function (req, res) {
-  const urlTtile = _.lowerCase(req.params.typeTitle);
-  //format了type进去的title，所以不用在意type title的样式
+app.get("/posts/:typeTitle", function (req, res) {
+  //change the type title from post.title to post._id
+  const urlTtile = req.params.typeTitle;
 
-  //当array里是object的时候，怎么查询object里的元素存在不存在
-  //   const result= posts.some(function (arrVal) {
-  //    return urlTtile = arrVal;
-  //  })
-
-  //the way angela used
-  posts.forEach(function (post) {
-    const storedTitle = _.lowerCase(post.title);
-    //不要忘记const的scope，所以要在这个函数内使用它
-
-    if (storedTitle === urlTtile) {
-      res.render("post", { postTitle: post.title, postContent: post.content });
+  //use id & findById could make the code shorter and neadier
+  Post.findById({ _id: req.params.typeTitle }, function (err, post) {
+    if (!err) {
+      res.render("post", {
+        postTitle: post.title,
+        postContent: post.content,
+      });
     }
   });
-  //因为涉及到大小写变换和—，所以不能直接用array的元素检索
 });
 
 //post
